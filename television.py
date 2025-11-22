@@ -1,7 +1,5 @@
 class Television():
     """
-    Simple Television model.
-
     This class simulates a basic television with power, mute, channel,
     and volume control. Volume is stored independently of the muted
     display state (muting reports Volume = 0 when powered on). Channel
@@ -24,14 +22,9 @@ class Television():
 
 
     def __init__(self) -> None:
-        """Initialize a powered-off television with minimum channel/volume."""
-        # Whether the TV is powered on
         self.__status: bool = False
-        # Whether the TV is muted (display shows 0 while muted)
         self.__muted: bool = False
-        # Stored volume level (0..MAX_VOLUME)
         self.__volume: int = self.MIN_VOLUME
-        # Current channel index (wraps between MIN_CHANNEL..MAX_CHANNEL)
         self.__channel: int = self.MIN_CHANNEL
 
 
@@ -54,7 +47,7 @@ class Television():
             self.__muted = not self.__muted
 
     def channel_up(self) -> None:
-        """Advance the channel by one, wrapping at `MAX_CHANNEL`.
+        """Advance the channel by one, till MAX_CHANNEL.
 
         Has effect only when the TV is powered on.
         """
@@ -65,7 +58,7 @@ class Television():
                 self.__channel += 1
 
     def channel_down(self) -> None:
-        """Go to the previous channel, wrapping at `MIN_CHANNEL`.
+        """Go to the previous channel, till MIN_CHANNEL.
 
         Has effect only when the TV is powered on.
         """
@@ -76,7 +69,7 @@ class Television():
                 self.__channel -= 1
 
     def volume_up(self) -> None:
-        """Increase volume by one step (up to `MAX_VOLUME`).
+        """Increase volume by one step up to MAX_VOLUME.
 
         Pressing a volume button while muted will unmute the TV and
         then adjust the stored volume. No effect when the TV is off.
@@ -89,7 +82,7 @@ class Television():
                 self.__volume += 1
 
     def volume_down(self) -> None:
-        """Decrease volume by one step (down to `MIN_VOLUME`).
+        """Decrease volume by one step down to MIN_VOLUME.
 
         Pressing a volume button while muted will unmute the TV and
         then adjust the stored volume. No effect when the TV is off.
@@ -103,16 +96,14 @@ class Television():
 
 
     def __str__(self) -> str:
-        """Return a human-readable status string for the TV.
-
-        When the TV is powered on and muted, the displayed volume is
-        reported as 0 while the stored `__volume` remains unchanged.
-        """
         # When muted (and powered on) report volume as 0 for display only
         display_volume = 0
-        if self.__status and self.__muted:
-            return f'Power = {self.__status}, Channel = {self.__channel}, Volume = {display_volume}'
+        if self.__status:
+            if  self.__muted:
+                return f'Power = {self.__status}, Channel = {self.__channel}, Volume = {display_volume}'
+            else:
+                return f'Power = {self.__status}, Channel = {self.__channel}, Volume = {self.__volume}'
         else:
-            return f'Power = {self.__status}, Channel = {self.__channel}, Volume = {self.__volume}'
+            return f'Power = {self.__status}, Channel = {self.__channel}, Volume = 0'
         
     
